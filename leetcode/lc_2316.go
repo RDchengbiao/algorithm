@@ -14,7 +14,7 @@ func dfs(graph map[int][]int, start int, vis map[int]bool, cnt *int) {
 		}
 	}
 }
-func countPairs(n int, edges [][]int) int64 {
+func countPairs1(n int, edges [][]int) int64 {
 
 	graph := make(map[int][]int)
 
@@ -48,6 +48,65 @@ func countPairs(n int, edges [][]int) int64 {
 
 	//累计所有无法互相到达点对数
 	return sum
+}
+
+// UnionFind 并查集方法实现
+type UnionFind struct {
+	num     int
+	parents map[int]int
+	size    map[int]int
+}
+
+func NewUnionFind(n int) *UnionFind {
+	uf := new(UnionFind)
+	uf.num = n
+	uf.parents = make(map[int]int)
+	uf.size = make(map[int]int)
+	for i := 0; i < n; i++ {
+		uf.parents[i] = i
+		uf.size[i] = 1
+	}
+	return uf
+}
+func (uf *UnionFind) find(x int) int {
+	if uf.parents[x] == x {
+		return x
+	}
+	//路径压缩
+	uf.parents[x] = uf.find(uf.parents[x])
+	return uf.parents[x]
+}
+func (uf *UnionFind) union(x, y int) {
+
+	xp := uf.find(x)
+	yp := uf.find(y)
+	if xp != yp {
+		sizeX := uf.size[xp]
+		sizeY := uf.size[yp]
+		//小集合合并到大的集合中
+		if sizeX >= sizeY {
+			uf.parents[yp] = xp
+			uf.size[xp] += sizeY
+		} else {
+			uf.parents[xp] = yp
+			uf.size[yp] += sizeX
+		}
+	}
+}
+
+func countPairs(n int, edges [][]int) int64 {
+
+	uf := NewUnionFind(n)
+	for _, edge := range edges {
+		uf.union(edge[0], edge[1])
+	}
+	total := int64(0)
+	//遍历每个顶点，累加该顶点之外的所有顶点，因为会重复计算，所以最后结果需要除以2
+	for i := 0; i < n; i++ {
+		parentI := uf.find(i)
+		total += int64(n - uf.size[parentI])
+	}
+	return total / 2
 }
 
 func main() {
