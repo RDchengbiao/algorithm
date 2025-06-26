@@ -2,6 +2,8 @@ package main
 
 import "fmt"
 
+// 347. 前 K 个高频元素
+
 // 出现的数字统计计数，按照桶计数的思想，将出现次数相同的数字维护起来，之后提取前k个即可
 func topKFrequent(nums []int, k int) []int {
 	res := make([]int, 0)
@@ -25,6 +27,9 @@ func topKFrequent(nums []int, k int) []int {
 	}
 	return res
 }
+
+//todo 方法2. 使用堆即优先队列的思路
+
 func main() {
 
 	nums := []int{1, 1, 1, 2, 2, 3}

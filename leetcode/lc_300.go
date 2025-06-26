@@ -25,6 +25,13 @@ func lengthOfLIS(nums []int) int {
 
 	return res
 }
+
+// todo 贪心+二分
+func lengthOfLIS2(nums []int) int {
+	res := 1
+
+	return res
+}
 func main() {
 
 	nums := []int{0, 1, 0, 3, 2, 3}
