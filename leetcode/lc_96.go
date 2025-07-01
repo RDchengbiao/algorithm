@@ -2,6 +2,8 @@ package main
 
 import "fmt"
 
+//96. 不同的二叉搜索树
+
 // 动态规划，dp[i]表示当有i个节点时有多少种二叉搜索树。
 
 func numTrees(n int) int {
