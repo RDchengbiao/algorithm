@@ -50,6 +50,7 @@ func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
 		return nil
 	}
 	if root == p || root == q {
+
 		return root
 	}
 	leftSon := lowestCommonAncestor(root.Left, p, q)
