@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 
-// 173. 二叉搜索树迭代器
+//94. 二叉树的中序遍历
 
 type TreeNode struct {
 	Val   int
@@ -37,45 +37,31 @@ func (s *Stack) Empty() bool {
 // 一直迭代左子树，将节点一直压栈。出栈打印节点的值。如果节点右子树不为空，移动指针到右子树，
 // 继续迭代左子树，并重复这个过程。
 
-type BSTIterator struct {
-	stk  *Stack
-	root *TreeNode
-}
+func inorderTraversal(root *TreeNode) []int {
 
-func Constructor(root *TreeNode) BSTIterator {
-	it := BSTIterator{
-		stk: new(Stack),
-	}
-
-	it.root = root
-	return it
-}
-
-func (this *BSTIterator) Next() int {
-	for this.root != nil {
-		this.stk.Push(this.root)
-		this.root = this.root.Left
-	}
-	root := this.stk.Top()
-	this.stk.Pop()
-	res := root.Val
-	if root.Right != nil {
-		this.root = root.Right
+	stk := &Stack{}
+	res := make([]int, 0)
+	for !stk.Empty() || root != nil {
+		for root != nil {
+			stk.Push(root)
+			root = root.Left
+		}
+		rootTmp := stk.Top()
+		stk.Pop()
+		res = append(res, rootTmp.Val)
+		if rootTmp.Right != nil {
+			root = rootTmp.Right
+		}
 	}
 	return res
 }
 
-func (this *BSTIterator) HasNext() bool {
-
-	return !this.stk.Empty() || this.root != nil
-}
-
 func main() {
+
 	root := &TreeNode{Val: 1}
 	root.Right = &TreeNode{Val: 7}
 	root.Right.Left = &TreeNode{Val: 4}
-	it := Constructor(root)
-	for it.HasNext() {
-		fmt.Println(it.Next())
-	}
+	res := inorderTraversal(root)
+	fmt.Println(res)
+
 }
