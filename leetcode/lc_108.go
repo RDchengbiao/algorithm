@@ -29,5 +29,4 @@ func main() {
 	nums := []int{-10, -3, 0, 5, 9}
 	res := sortedArrayToBST(nums)
 	fmt.Println(res)
-
 }
